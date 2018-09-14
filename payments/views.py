@@ -9,10 +9,6 @@ import braintree
 # configuring paypal
 gateway = braintree.BraintreeGateway(access_token=settings.ACCESS_TOKEN)
 
-def index(request):
-
-    return render(request, 'index.html')
-
 def paypal(request):
     client_token=gateway.client_token.generate()
     title = 'PayPal'
