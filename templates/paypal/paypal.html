@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="paypal"></div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{{block.super}}
+<!-- Load the required checkout.js script -->
+<script src="https://www.paypalobjects.com/api/checkout.js" data-version-4></script>
+<!-- Load the required Braintree components. -->
+<script src="https://js.braintreegateway.com/web/3.33.0/js/client.min.js"></script>
+<script src="https://js.braintreegateway.com/web/3.33.0/js/paypal-checkout.min.js"></script>
+<script>
+    var token = '{{token}}'
+    var amount = 50
+    paypal.Button.render({
+        braintree: braintree,
+        // Other configuration
+        client: {
+            production: 'CLIENT_TOKEN_FROM_SERVER',
+            sandbox: token
+        },
+        env: 'sandbox', // or 'sandbox'
+        commit: true, // This will add the transaction amount to the PayPal button
+
+        payment: function (data, actions) {
+            return actions.braintree.create({
+                flow: 'checkout', // Required
+                amount: amount, // Required
+                currency: 'USD', // Required
+                enableShippingAddress: true,
+                shippingAddressEditable: true,
+                shippingAddressOverride: {
+                    recipientName: 'Scruff McGruff',
+                    line1: '1234 Main St.',
+                    line2: 'Unit 1',
+                    city: 'Chicago',
+                    countryCode: 'US',
+                    postalCode: '60652',
+                    state: 'IL',
+                    phone: '123.456.7890'
+                }
+            });
+        },
+
+        onAuthorize: function (payload) {
+            // Submit `payload.nonce` to your server.
+            nonce=payload.nonce
+            orderID=payload.orderID
+            payerID = payload.payerID
+            paymentID = payload.paymentID
+            dataa = {'csrfmiddlewaretoken': '{{ csrf_token }}', 'nonce': nonce, 'orderID':orderID, 'amount':amount, 'payerID':payerID, 'paymentID':paymentID}
+            $.ajax({
+                'url':'paynow/',
+                'type':'POST',
+                'data': dataa,
+                'dataType':'json',
+                'success':function(data){
+                    alert(data['success'])
+                }
+            })
+        },
+    }, '#paypal');
+</script>
+{% endblock %}
