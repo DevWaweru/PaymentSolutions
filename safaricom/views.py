@@ -70,7 +70,7 @@ def create_payment(request):
 def verify_payment(request):
     print(request.META.get('HTTP_X_FORWARDED_FOR'))
     # print(request.META)
-    data = requests.get('https://payments-solutions.herokuapp.com/safaricom/verify_payment').json()['hooks']
+    data = requests.get(request).json()['hooks']
     print(data)
     # access_token = "Access-Token"
     # api_url = "https://sandbox.safaricom.co.ke/mpesa/stkpushquery/v1/query"
