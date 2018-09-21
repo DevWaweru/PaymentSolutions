@@ -26,7 +26,7 @@ def create_time():
 def safaricom(request):
     title = 'Safaricom'
     payment_form = PaymentForm()
-    print(dir(request.body))
+    # print(dir(request))
     return render(request, 'safaricom/mpesa.html',{
         'title':title,
         'form':payment_form,
@@ -66,6 +66,8 @@ def create_payment(request):
     return JsonResponse({'success':f'{response.text}'})
 
 def verify_payment(request):
+    print(request.GET)
+    print(request.META)
     print(request.POST)
     # access_token = "Access-Token"
     # api_url = "https://sandbox.safaricom.co.ke/mpesa/stkpushquery/v1/query"
@@ -79,4 +81,4 @@ def verify_payment(request):
     # response = verify_response(api_url, request, headers)
 
     # print (response.text)
-    return JsonResponse(request.POST)
+    return JsonResponse(request.META)
