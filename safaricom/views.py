@@ -7,6 +7,7 @@ from .credentials import get_access_token, get_response, verify_response
 from django.http import JsonResponse, HttpResponse
 from .models import MpesaPayment
 from .forms import PaymentForm
+from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
 def create_time():
@@ -65,10 +66,11 @@ def create_payment(request):
     # return redirect('verify_payment')
     return JsonResponse({'success':f'{response.text}'})
 
+@csrf_exempt
 def verify_payment(request):
-    print(request.GET)
-    print(request.META)
-    print(request.POST)
+    # print(request.GET)
+    # print(request.META)
+    print(request.data)
     # access_token = "Access-Token"
     # api_url = "https://sandbox.safaricom.co.ke/mpesa/stkpushquery/v1/query"
     # headers = {"Authorization": f"Bearer {access_token}"}
@@ -81,4 +83,4 @@ def verify_payment(request):
     # response = verify_response(api_url, request, headers)
 
     # print (response.text)
-    return JsonResponse(request.META)
+    return JsonResponse(request.data)
