@@ -68,9 +68,9 @@ def create_payment(request):
 
 @csrf_exempt
 def verify_payment(request):
-    # print(request.GET)
+    print(request.GET.get('body'))
     # print(request.META)
-    print(request.data)
+    print(request.POST.get('body'))
     # access_token = "Access-Token"
     # api_url = "https://sandbox.safaricom.co.ke/mpesa/stkpushquery/v1/query"
     # headers = {"Authorization": f"Bearer {access_token}"}
@@ -83,4 +83,4 @@ def verify_payment(request):
     # response = verify_response(api_url, request, headers)
 
     # print (response.text)
-    return JsonResponse(request.data)
+    return JsonResponse(request.POST)
