@@ -66,6 +66,7 @@ def create_payment(request):
     return JsonResponse({'success':f'{response.text}'})
 
 def verify_payment(request):
+    print(request.POST)
     # access_token = "Access-Token"
     # api_url = "https://sandbox.safaricom.co.ke/mpesa/stkpushquery/v1/query"
     # headers = {"Authorization": f"Bearer {access_token}"}
