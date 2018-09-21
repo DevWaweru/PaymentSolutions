@@ -56,7 +56,7 @@ def create_payment(request):
         "PartyA": p_number,
         "PartyB": "174379",
         "PhoneNumber": p_number,
-        "CallBackURL": f"https://payments-solutions.herokuapp.com/safaricom/verify_payment/",
+        "CallBackURL": "https://payments-solutions.herokuapp.com/safaricom/verify_payment/",
         "AccountReference": "NewPlan",
         "TransactionDesc": "Thank you"
     }
@@ -68,9 +68,10 @@ def create_payment(request):
 
 @csrf_exempt
 def verify_payment(request):
-    print(request.GET.get('body'))
+    print(request.META.get('HTTP_X_FORWARDED_FOR'))
     # print(request.META)
-    print(request.POST.get('body'))
+    data = requests.get('https://payments-solutions.herokuapp.com/safaricom/verify_payment').json()['hooks']
+    print(data)
     # access_token = "Access-Token"
     # api_url = "https://sandbox.safaricom.co.ke/mpesa/stkpushquery/v1/query"
     # headers = {"Authorization": f"Bearer {access_token}"}
