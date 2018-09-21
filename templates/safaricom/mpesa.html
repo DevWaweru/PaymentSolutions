@@ -5,7 +5,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-6">
-            <form action="{% url 'create_payment' %}" method="post" id="donate">
+            <form action="{% url 'create_payment' %}" method="POST" id="donate">
                 {% csrf_token %}
                 {% bootstrap_form form %}
                 <div class="form-group">
@@ -17,7 +17,7 @@
 </div>
 {% endblock %}
 
-{% block javascript %}
+{% block scripts %}
 {{block.super}}
 <script>
     $('form#donate').submit(function (event) {
@@ -25,7 +25,7 @@
         form = $('form#donate')
         
         $.ajax({
-            'url': '/create_payment/',
+            'url': '/safaricom/create_payment/',
             'type': 'POST',
             'data': form.serialize(),
             'dataType': 'json',

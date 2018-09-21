@@ -5,7 +5,7 @@ from django.conf import settings
 
 urlpatterns = [
     url('^$', views.safaricom, name='safaricom'),
-    url(r'^create_payment/$', views.create_payment, name='create_payment'),
+    url(r'^create_payment/', views.create_payment, name='create_payment'),
     url(r'^verify_payment/$', views.verify_payment, name='verify_payment'),
 
 ]

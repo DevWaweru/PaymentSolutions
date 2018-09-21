@@ -1,7 +1,8 @@
 from django import forms
-from .models import Payment
+from .models import MpesaPayment
 
 class PaymentForm(forms.ModelForm):
     class Meta:
-        model = Payment
+        model = MpesaPayment
         fields = '__all__'
+        exclude = ['time']
