@@ -16,7 +16,7 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = ['192.168.100.15', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['192.168.100.15', 'localhost', '127.0.0.1', '.herokuapp.com']
 
 # Activation period of user account
 ACCOUNT_ACTIVATION_DAYS = 2
@@ -84,21 +84,21 @@ if config('MODE')=="dev":
     }
 # production
 else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.environ['RDS_DB_NAME'],
-            'USER': os.environ['RDS_USERNAME'],
-            'PASSWORD': os.environ['RDS_PASSWORD'],
-            'HOST': os.environ['RDS_HOSTNAME'],
-            'PORT': os.environ['RDS_PORT'],
-        }
+    # DATABASES = {
+    #     'default': {
+    #         'ENGINE': 'django.db.backends.postgresql',
+    #         'NAME': os.environ['RDS_DB_NAME'],
+    #         'USER': os.environ['RDS_USERNAME'],
+    #         'PASSWORD': os.environ['RDS_PASSWORD'],
+    #         'HOST': os.environ['RDS_HOSTNAME'],
+    #         'PORT': os.environ['RDS_PORT'],
+    #     }
+    # }
+   DATABASES = {
+       'default': dj_database_url.config(
+           default=config('DATABASE_URL')
+       )
     }
-#    DATABASES = {
-#        'default': dj_database_url.config(
-#            default=config('DATABASE_URL')
-#        )
-#     }
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
@@ -146,13 +146,6 @@ STATICFILES_STORAGE='whitenoise.django.GzipManifestStaticFilesStorage'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
-
-# Email configurations
-EMAIL_USE_TLS = config('EMAIL_USE_TLS')
-EMAIL_HOST = config('EMAIL_HOST')
-EMAIL_PORT = config('EMAIL_PORT')
-EMAIL_HOST_USER = config('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 
 # PayPal Configurations
 ACCESS_TOKEN=config('ACCESS_TOKEN')

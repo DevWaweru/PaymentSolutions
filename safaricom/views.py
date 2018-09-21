@@ -55,7 +55,7 @@ def create_payment(request):
         "PartyA": p_number,
         "PartyB": "174379",
         "PhoneNumber": p_number,
-        "CallBackURL": f"https://{request.get_host()}/verify_payment/",
+        "CallBackURL": f"https://payments-solutions.herokuapp.com/verify_payment/",
         "AccountReference": "NewPlan",
         "TransactionDesc": "Thank you"
     }

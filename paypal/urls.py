@@ -22,6 +22,5 @@ urlpatterns = [
     url(r'^paypal/',include('payments.urls')),
     url(r'',include('homepage.urls')),
     url(r'^safaricom/',include('safaricom.urls')),
-    url(r'^accounts/', include('registration.backends.hmac.urls')),
     url(r'^logout/$', views.logout, {"next_page": '/'}),
 ]
