@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <form action="{% url 'create_payment' %}" method="post" id="donate">
+                {% csrf_token %}
+                {% bootstrap_form form %}
+                <div class="form-group">
+                    <input type="submit" class="btn btn-warning" value="Donate">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascript %}
+{{block.super}}
+<script>
+    $('form#donate').submit(function (event) {
+        event.preventDefault()
+        form = $('form#donate')
+        
+        $.ajax({
+            'url': '/create_payment/',
+            'type': 'POST',
+            'data': form.serialize(),
+            'dataType': 'json',
+            'success': function (data) {
+                // $('#success-modal').modal('show')
+                // setTimeout(function () {
+                //     $('#success-modal').modal('hide')
+                // }, 2000)
+                alert(data['success'])
+            }
+        })
+        $('#id_first_name').val('');
+        $('#id_phone_number').val('');
+        $('#id_amount').val('');
+
+    })
+</script>
+{% endblock %}

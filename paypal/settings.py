@@ -16,7 +16,7 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = ['.elasticbeanstalk.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['192.168.100.15', 'localhost', '127.0.0.1']
 
 # Activation period of user account
 ACCOUNT_ACTIVATION_DAYS = 2
@@ -26,6 +26,8 @@ LOGIN_REDIRECT_URL = '/'
 # Application definition
 INSTALLED_APPS = [
     'payments.apps.PaymentsConfig',
+    'safaricom.apps.SafaricomConfig',
+    'homepage.apps.HomepageConfig',
     'bootstrap4',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -122,7 +124,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Africa/Nairobi'
 
 USE_I18N = True
 
@@ -154,3 +156,8 @@ EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 
 # PayPal Configurations
 ACCESS_TOKEN=config('ACCESS_TOKEN')
+
+# Safaricom Configurations
+INITIATOR_PASS = config('INITIATOR_PASS')
+CONSUMER_KEY=config('CONSUMER_KEY')
+CONSUMER_SECRET=config('CONSUMER_SECRET')
