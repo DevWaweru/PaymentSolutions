@@ -18,18 +18,53 @@ body {
     flex-direction: column;
 }
 
-.btn-primary {    
+.btn-primary {
     border-radius: 2px;
     color: #fff;
     background: linear-gradient(#0061ff, #0072ffe6, #008bff);
     border-color: #007bff00;
     width: 12rem;
 }
-.btn-primary:hover {    
+
+.btn-primary:hover {
     border-radius: 2px;
     color: #fff;
     background: linear-gradient(#0061ff, #0072ffe6, #008bff);
     box-shadow: 0 0 0 1px #0061ff, 0 7px 7px 0 rgba(55, 58, 138, 0.43), 0 2px 5px 0 rgba(43, 45, 80, 0.82), 0 2px 5px 0 rgb(0, 0, 0), 2px 0px 6px 1px #00000094;
     border-color: #007bff00;
     width: 12rem;
+}
+
+.texts {
+    padding: 1.5rem 2rem;
+    background: white;
+    border-radius: 5px;
+    /* border: 1px solid #8d8d8d94; */
+    box-shadow: 11px 12px 203px 3px #8080804f;
+    margin-bottom: 2rem;
+}
+
+.top {
+    margin-top: 2rem;
+}
+
+.img-demo {
+    width: 100%;
+    margin: 1rem 0;
+}
+
+.texts.results {
+    padding: 0;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+@media(min-width:765px) {
+    .texts.results {
+        padding: 0;
+        height: 141.5rem;
+        overflow-y: scroll;
+    }
 }

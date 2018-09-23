@@ -1,17 +1,71 @@
 {% extends 'base.html' %}
 {% load bootstrap4 %}
+{% load static %}
 
 {% block content %}
-<div class="container">
+{% include 'navbar.html' %}
+<div class="container top">
     <div class="row">
-        <div class="col-md-6">
-            <form action="{% url 'create_payment' %}" method="POST" id="donate">
-                {% csrf_token %}
-                {% bootstrap_form form %}
-                <div class="form-group">
-                    <input type="submit" class="btn btn-warning" value="Donate">
+        <div class="col-md-7 texts mr-4">
+            <h2 class="text-center">Lipa Na Mpesa API</h2>
+            <p>Lipa na Mpesa is among the effective and perhaps exciting ways of online payment systems. This demonstration will show how to integrate Lipa na Mpesa API for Django web applications. Run the localhost via <a href="https://ngrok.com/docs" target="_blank">ngrok</a> that will create a secure tunnel for the localhost to run. <em><strong>PS: POST data from the callback url MUST to go through an ssl connection. </strong></em></p>
+            <p>Fill the form to the right and click on pay to demonstrate the stk push request. Note the phone number begins with 254. Any money sent during testing is refunded by midnight. Or is it? </p>
+            <h4> Get Started </h4>
+            <ul style="padding-inline-start: 20px;">
+                <li>
+                    <p class="mb-0">Create an app on the developers site and select the Lipa na Mpesa Checkbox</p>
+                    <img class="img-demo" src="{% static 'images/mpesaapi/s1.png' %}" alt="s1 loading">
+                    <img src="{% static 'images/mpesaapi/s2.png' %}" alt="s2 loading" class="img-demo">
+                </li>
+                <li>
+                    <p class="mb-0">Copy the Consumer Key and Consumer Secret. These are used to create an access token to be used in request header when making the stk push request</p>
+                    <img src="{% static 'images/mpesaapi/s3.png' %}" alt="s3 loading" class="img-demo">
+                </li>
+                <li>
+                    <p class="mb-0">On the <a href="https://developer.safaricom.co.ke/apis-explorer" target="_blank">APIS</a> page, select <strong>MPESA EXPRESS</strong> and click on <strong>MPESA EXRPESS REQUEST</strong>. This page describes in detail everything you need to know about making the stk push request. The main interest, however, is in the test credentials.</p>
+                    <img src="{% static 'images/mpesaapi/s4.png' %}" alt="s4 loading" class="img-demo">
+                    <img src="{% static 'images/mpesaapi/s5.png' %}" alt="s5 loading" class="img-demo">
+                </li>
+                <li>
+                    <p class="mb-0">The <em>Lipa na Mpesa Online Shortcode</em> and <em>Lipa na Mpesa Online Passkey</em> are the important variables for the API. The <em>Lipa na Mpesa Online Shortcode</em> is the TILL_NUMBER and <em>Lipa na Mpesa Online Passkey</em> is the INITIATOR_PASS </p>
+                    <img src="{% static 'images/mpesaapi/s6.png' %}" alt="s6 loading" class="img-demo">
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-4">
+            <div class="row">
+                <div class="col-md-12 texts">
+                    <form action="{% url 'create_payment' %}" method="POST" id="donate">
+                        {% csrf_token %}
+                        {% bootstrap_form form %}
+                        <div class="form-group">
+                            <input type="submit" class="btn btn-warning" value="Pay">
+                        </div>
+                    </form>
                 </div>
-            </form>
+                <div class="col-md-12 texts results">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Receipt No</th>
+                                <th>Amount</th>
+                                <th>Phone No</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for transaction in transactions %}
+                            <tr>
+                                <td>{{transaction.mpesa_receipt_no}}</td>
+                                <td> {{transaction.amount}} </td>
+                                <td> {{transaction.phone_number|truncatechars:11}} </td>
+                            </tr>
+                            {% empty %}
+                            <p class="text-center">No transactions yet</p>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -30,17 +84,11 @@
             'data': form.serialize(),
             'dataType': 'json',
             'success': function (data) {
-                // $('#success-modal').modal('show')
-                // setTimeout(function () {
-                //     $('#success-modal').modal('hide')
-                // }, 2000)
                 alert(data['success'])
             }
         })
         $('#id_first_name').val('');
         $('#id_phone_number').val('');
-        $('#id_amount').val('');
-
     })
 </script>
 {% endblock %}

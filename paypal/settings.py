@@ -16,7 +16,7 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = ['192.168.100.15', 'localhost', '127.0.0.1', '.herokuapp.com']
+ALLOWED_HOSTS = ['192.168.100.15', 'localhost', '127.0.0.1', '.herokuapp.com', '.ngrok.io']
 
 # Activation period of user account
 ACCOUNT_ACTIVATION_DAYS = 2
@@ -154,3 +154,4 @@ ACCESS_TOKEN=config('ACCESS_TOKEN')
 INITIATOR_PASS = config('INITIATOR_PASS')
 CONSUMER_KEY=config('CONSUMER_KEY')
 CONSUMER_SECRET=config('CONSUMER_SECRET')
+TILL_NO=config('TILL_NO')
