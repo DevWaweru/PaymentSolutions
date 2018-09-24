@@ -1,11 +1,60 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
 {% include 'navbar.html' %}
-<div class="container">
+<div class="container top">
     <div class="row">
-        <div class="col-md-12">
-            <div id="paypal"></div>
+        <div class="col-md-7 texts mr-4">
+            <h2 class="text-center">PayPal Checkout Api</h2>
+            <p>PayPal is perhaps the most reliable online payment system since it can be used in most parts of the world effectively. This demonstration will cover simple PayPal checkout. For testing purposes, the application uses a sandbox account that is tied to your real PayPal account. Therefore you need to have a PayPal account for you to create a sandbox account with virtaul funds in it. It is recommended to use <a href="https://ngrok.com/docs" target="_blank">ngrok</a> to create an ssl connection when making the mock payments via the sandbox. </p>
+            <h4 class="text-center">Get started</h4>
+            <ul style="padding-inline-start: 20px;">
+                <li>
+                    <p class="mb-0">Assuming you have a PayPal account, create a sandbox account in the developer's <a href="https://developer.paypal.com/developer/applications/" target="_blank">dashboard</a>. You need a facilitators sandbox account (where the money is going to). And a buyer's account (sender of funds).</p>
+                    <img src="{% static 'images/PayPal/s1.png' %}" alt="s1 loading" class="img-demo">
+
+                </li>
+                <li>
+                    <p class="mb-0">Copy the <code>access token</code> to the env file. Switching to live account is as easy as changing the access token from sandbox to live. And somepart in the JavaScript as well. Lol</p>
+                    <img src="{% static 'images/PayPal/s2.png' %}" alt="s2 loading" class="img-demo">
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-4">
+            <div class="row">
+                <div class="col-md-12 texts">
+                    <form action="">
+                        <div class="form-group">
+                            <input class="form-control" type="number" name="amount" id="id_amount" value="20">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="first_name" id='id_first_name' value='Name' onFocus="this.form.first_name.value=''">
+                        </div>
+                    </form>
+                    <div id="paypal" style="text-align: center;"></div>
+                </div>
+                <div class="col-md-12 texts results" style="height:86.5rem">
+                    <table class="table table-striped">
+                        <thead>
+                            <th>Name</th>
+                            <th>Amount</th>
+                            <th>Order Id</th>
+                        </thead>
+                        <tbody>
+                            {% for transaction in transactions %}
+                            <tr>
+                                <td> {{transaction.first_name}} </td>
+                                <td> {{transaction.amount}} </td>
+                                <td> {{transaction.order_id|truncatechars:7}} </td>
+                            </tr>
+                            {% empty %}
+                            <p class="text-center">No Transactions</p>
+                            {% endfor %}
+                        </tbody>                        
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -20,7 +69,7 @@
 <script src="https://js.braintreegateway.com/web/3.33.0/js/paypal-checkout.min.js"></script>
 <script>
     var token = '{{token}}'
-    var amount = 50
+    
     paypal.Button.render({
         braintree: braintree,
         // Other configuration
@@ -28,10 +77,16 @@
             production: 'CLIENT_TOKEN_FROM_SERVER',
             sandbox: token
         },
-        env: 'sandbox', // or 'sandbox'
+        style: {
+            color: 'blue',   // 'gold, 'blue', 'silver', 'black'
+            size:  'medium', // 'medium', 'small', 'large', 'responsive'
+            shape: 'rect'    // 'rect', 'pill'
+        },
+        env: 'sandbox', // or 'production'
         commit: true, // This will add the transaction amount to the PayPal button
 
         payment: function (data, actions) {
+            var amount = $('#id_amount').val()
             return actions.braintree.create({
                 flow: 'checkout', // Required
                 amount: amount, // Required
@@ -53,11 +108,13 @@
 
         onAuthorize: function (payload) {
             // Submit `payload.nonce` to your server.
+            var amount = $('#id_amount').val()     
+            var first_name = $('#id_first_name').val()  
             nonce=payload.nonce
             orderID=payload.orderID
             payerID = payload.payerID
             paymentID = payload.paymentID
-            dataa = {'csrfmiddlewaretoken': '{{ csrf_token }}', 'nonce': nonce, 'orderID':orderID, 'amount':amount, 'payerID':payerID, 'paymentID':paymentID}
+            dataa = {'csrfmiddlewaretoken': '{{ csrf_token }}', 'first_name':first_name, 'nonce': nonce, 'orderID':orderID, 'amount':amount, 'payerID':payerID, 'paymentID':paymentID}
             $.ajax({
                 'url':'paynow/',
                 'type':'POST',

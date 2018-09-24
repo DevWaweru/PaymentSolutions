@@ -86,4 +86,4 @@ def verify_payment(request):
         fail_transfer = UnsuccessfulTransfer(merchant_id=merchant_request_id, checkout_request_id=checkout_request_id, result_code=result_code, result_description=description)
         fail_transfer.save()
 
-    return HttpResponse(request.body.decode('utf-8'))
+    return redirect('safaricom')

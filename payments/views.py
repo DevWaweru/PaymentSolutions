@@ -5,6 +5,7 @@ from datetime import datetime, timedelta
 from django.conf import settings
 from django.http import JsonResponse
 import braintree
+from .models import PaypalTransaction
 
 # configuring paypal
 gateway = braintree.BraintreeGateway(access_token=settings.ACCESS_TOKEN)
@@ -12,13 +13,16 @@ gateway = braintree.BraintreeGateway(access_token=settings.ACCESS_TOKEN)
 def paypal(request):
     client_token=gateway.client_token.generate()
     title = 'PayPal'
+    transactions = PaypalTransaction.all_transactions()
 
     return render(request, 'paypal/paypal.html', {
         'title':title,
         'token':client_token,
+        'transactions':transactions,
     })
 
 def paynow(request):
+    f_name = request.POST.get('first_name')
     order_id = request.POST.get('orderID')
     payer_id = request.POST.get('payerID')
     payment_id = request.POST.get('paymentID')
@@ -54,6 +58,8 @@ def paynow(request):
 
     if result.is_success:
         success = f"Success ID: {result.transaction.id}"
+        new_transaction = PaypalTransaction(first_name=f_name, order_id=order_id, payer_id=payer_id, payment_id=payment_id, nonce=nonce, amount=amount)
+        new_transaction.save()
 
         data = {'success': success}
     else:
